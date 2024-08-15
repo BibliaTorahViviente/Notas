@@ -4,20 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveNoteBtn = document.getElementById('save-note');
     const downloadDocxBtn = document.getElementById('download-docx');
     const toggleModeBtn = document.getElementById('toggle-mode');
-    const searchInput = document.getElementById('search');
-    
     const fontSelect = document.getElementById('font-select');
     const increaseFontBtn = document.getElementById('increase-font');
     const decreaseFontBtn = document.getElementById('decrease-font');
     const themeSelect = document.getElementById('theme-select');
     const lineHeightSelect = document.getElementById('line-height-select');
-    
+
     let notes = JSON.parse(localStorage.getItem('notes')) || [];
     let currentNoteId = null;
     let isReadOnly = false;
 
-    // Inicializar Quill con barra de herramientas completa
-    var quill = new Quill('#editor-container', {
+    const quill = new Quill('#editor-container', {
         theme: 'snow',
         modules: {
             toolbar: '#editor-toolbar'
@@ -28,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentNoteId !== null) {
             notes[currentNoteId].content = quill.root.innerHTML;
             localStorage.setItem('notes', JSON.stringify(notes));
-            console.log('Nota guardada:', notes[currentNoteId]);
         }
     }
 
@@ -72,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         quill.root.style.fontSize = (currentSize - 2) + 'px';
     }
 
-
     function applyTheme() {
         document.body.className = '';
         const theme = themeSelect.value;
@@ -88,14 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function downloadDocx() {
         if (currentNoteId !== null) {
             const content = quill.getText();
-
             const doc = new docx.Document({
                 sections: [{
                     properties: {},
                     children: [
-                        new docx.Paragraph({
-                            children: [new docx.TextRun(content)]
-                        })
+                        new docx.Paragraph(content)
                     ]
                 }]
             });
@@ -121,14 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
     decreaseFontBtn.addEventListener('click', decreaseFontSize);
     themeSelect.addEventListener('change', applyTheme);
     lineHeightSelect.addEventListener('change', applyLineHeight);
-
-    searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        const filteredNotes = notes.filter(note => note.content.toLowerCase().includes(query));
-        if (filteredNotes.length > 0) {
-            loadNoteContent(notes.indexOf(filteredNotes[0]));
-        }
-    });
 
     if (notes.length > 0) {
         loadNoteContent(0);
