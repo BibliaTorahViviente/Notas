@@ -14,10 +14,40 @@
         <input type="text" id="search" placeholder="Buscar notas...">
         <button id="new-note">Nueva Nota</button>
         <button id="save-note">Guardar Nota</button>
+        <button id="download-docx">Descargar DOCX</button>
     </header>
+    <div id="editor-toolbar">
+        <!-- Barra de herramientas personalizada -->
+        <span class="ql-formats">
+            <select class="ql-header"></select>
+            <select class="ql-font"></select>
+            <select class="ql-size"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <button class="ql-align"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-link"></button>
+            <button class="ql-image"></button>
+        </span>
+    </div>
     <div id="editor-container"></div>
     <!-- Incluir Quill.js -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <!-- Incluir biblioteca docx para exportar a DOCX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/6.1.0/docx.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
