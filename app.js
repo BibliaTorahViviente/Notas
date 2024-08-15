@@ -1,11 +1,15 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const newNoteBtn = document.getElementById('new-note');
     const saveNoteBtn = document.getElementById('save-note');
     const downloadDocxBtn = document.getElementById('download-docx');
     const toggleModeBtn = document.getElementById('toggle-mode');
     const searchInput = document.getElementById('search');
-    const editorContainer = document.getElementById('editor-container');
+    
+    const fontSelect = document.getElementById('font-select');
+    const increaseFontBtn = document.getElementById('increase-font');
+    const decreaseFontBtn = document.getElementById('decrease-font');
+    const themeSelect = document.getElementById('theme-select');
+    const lineHeightSelect = document.getElementById('line-height-select');
     
     let notes = JSON.parse(localStorage.getItem('notes')) || [];
     let currentNoteId = null;
@@ -53,17 +57,42 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleModeBtn.textContent = isReadOnly ? 'Modo Edición' : 'Modo Lectura';
     }
 
+    function applyFont() {
+        quill.root.style.fontFamily = fontSelect.value;
+    }
+
+    function increaseFontSize() {
+        const currentSize = parseFloat(window.getComputedStyle(quill.root).fontSize);
+        quill.root.style.fontSize = (currentSize + 2) + 'px';
+    }
+
+    function decreaseFontSize() {
+        const currentSize = parseFloat(window.getComputedStyle(quill.root).fontSize);
+        quill.root.style.fontSize = (currentSize - 2) + 'px';
+    }
+
+    function applyTheme() {
+        document.body.className = '';
+        const theme = themeSelect.value;
+        if (theme !== 'default') {
+            document.body.classList.add(`${theme}-theme`);
+        }
+    }
+
+    function applyLineHeight() {
+        quill.root.style.lineHeight = lineHeightSelect.value;
+    }
+
     function downloadDocx() {
         if (currentNoteId !== null) {
-            const content = notes[currentNoteId].content;
+            const content = quill.getText();
 
-            // Procesar el contenido para crear un documento DOCX
             const doc = new docx.Document({
                 sections: [{
                     properties: {},
                     children: [
                         new docx.Paragraph({
-                            children: [new docx.TextRun(content.replace(/<[^>]+>/g, ''))]
+                            children: [new docx.TextRun(content)]
                         })
                     ]
                 }]
@@ -85,16 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadDocxBtn.addEventListener('click', downloadDocx);
     toggleModeBtn.addEventListener('click', toggleReadMode);
 
+    fontSelect.addEventListener('change', applyFont);
+    increaseFontBtn.addEventListener('click', increaseFontSize);
+    decreaseFontBtn.addEventListener('click', decreaseFontSize);
+    themeSelect.addEventListener('change', applyTheme);
+    lineHeightSelect.addEventListener('change', applyLineHeight);
+
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.toLowerCase();
-        // Lógica de búsqueda de notas
         const filteredNotes = notes.filter(note => note.content.toLowerCase().includes(query));
         if (filteredNotes.length > 0) {
             loadNoteContent(notes.indexOf(filteredNotes[0]));
         }
     });
 
-    // Cargar la primera nota si existe
     if (notes.length > 0) {
         loadNoteContent(0);
     }
