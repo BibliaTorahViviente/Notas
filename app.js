@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveNoteBtn = document.getElementById('save-note');
     const searchInput = document.getElementById('search');
     
-    let notes = [];
+    let notes = JSON.parse(localStorage.getItem('notes')) || [];
     let currentNoteId = null;
 
     // Inicializar Quill
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveNote() {
         if (currentNoteId !== null) {
             notes[currentNoteId].content = quill.root.innerHTML;
-            // Aquí puedes añadir código para guardar la nota en la base de datos
+            localStorage.setItem('notes', JSON.stringify(notes));
             console.log('Nota guardada:', notes[currentNoteId]);
         }
     }
@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notes.push(newNote);
         currentNoteId = newNote.id;
         quill.setText('');
+        localStorage.setItem('notes', JSON.stringify(notes));
     }
 
     newNoteBtn.addEventListener('click', createNote);
@@ -50,5 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Lógica de búsqueda de notas
     });
 
-    // Cargar y sincronizar notas con el backend (API)
+    // Cargar la primera nota si existe
+    if (notes.length > 0) {
+        currentNoteId = 0;
+        quill.root.innerHTML = notes[currentNoteId].content;
+    }
 });
