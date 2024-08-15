@@ -40,21 +40,21 @@ header button:hover {
     background-color: #218838;
 }
 
-#editor-toolbar {
+#editor-toolbar, #editor-container {
+    transition: all 0.3s ease;
+}
+
+.read-only #editor-toolbar {
+    display: none;
+}
+
+.read-only .ql-container {
+    border: none;
+}
+
+.read-only #editor-container .ql-editor {
     background-color: #f4f4f4;
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
-}
-
-#editor-container {
-    flex: 1;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.ql-editor {
-    height: 100%;
-    box-sizing: border-box;
+    cursor: default;
 }
 
 @media (max-width: 768px) {
