@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const newNoteBtn = document.getElementById('new-note');
     const saveNoteBtn = document.getElementById('save-note');
