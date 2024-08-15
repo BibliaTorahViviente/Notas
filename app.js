@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const newNoteBtn = document.getElementById('new-note');
     const saveNoteBtn = document.getElementById('save-note');
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentSize = parseFloat(window.getComputedStyle(quill.root).fontSize);
         quill.root.style.fontSize = (currentSize - 2) + 'px';
     }
+
 
     function applyTheme() {
         document.body.className = '';
