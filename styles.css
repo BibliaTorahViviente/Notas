@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -44,8 +43,18 @@ header button:hover {
     transition: all 0.3s ease;
 }
 
+#reader-toolbar {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 .read-only #editor-toolbar {
     display: none;
+}
+
+.read-only #reader-toolbar {
+    display: block;
 }
 
 .read-only .ql-container {
@@ -55,6 +64,31 @@ header button:hover {
 .read-only #editor-container .ql-editor {
     background-color: #f4f4f4;
     cursor: default;
+}
+
+body.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-theme {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.yellow-theme {
+    background-color: #ffffcc;
+    color: #000000;
+}
+
+body.blue-theme {
+    background-color: #e6f7ff;
+    color: #000000;
+}
+
+.ql-editor {
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 @media (max-width: 768px) {
