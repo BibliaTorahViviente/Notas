@@ -38,11 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('notes', JSON.stringify(notes));
     }
 
+    function loadNoteContent(noteId) {
+        currentNoteId = noteId;
+        quill.root.innerHTML = notes[noteId].content;
+    }
+
     function downloadDocx() {
         if (currentNoteId !== null) {
             const content = notes[currentNoteId].content;
 
-            // Crear un documento DOCX
+            // Procesar el contenido para crear un documento DOCX
             const doc = new docx.Document({
                 sections: [{
                     properties: {},
@@ -72,11 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.toLowerCase();
         // Lógica de búsqueda de notas
+        const filteredNotes = notes.filter(note => note.content.toLowerCase().includes(query));
+        if (filteredNotes.length > 0) {
+            loadNoteContent(notes.indexOf(filteredNotes[0]));
+        }
     });
 
     // Cargar la primera nota si existe
     if (notes.length > 0) {
-        currentNoteId = 0;
-        quill.root.innerHTML = notes[currentNoteId].content;
+        loadNoteContent(0);
     }
 });
