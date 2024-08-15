@@ -3,10 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const newNoteBtn = document.getElementById('new-note');
     const saveNoteBtn = document.getElementById('save-note');
     const downloadDocxBtn = document.getElementById('download-docx');
+    const toggleModeBtn = document.getElementById('toggle-mode');
     const searchInput = document.getElementById('search');
+    const editorContainer = document.getElementById('editor-container');
     
     let notes = JSON.parse(localStorage.getItem('notes')) || [];
     let currentNoteId = null;
+    let isReadOnly = false;
 
     // Inicializar Quill con barra de herramientas completa
     var quill = new Quill('#editor-container', {
@@ -43,6 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
         quill.root.innerHTML = notes[noteId].content;
     }
 
+    function toggleReadMode() {
+        isReadOnly = !isReadOnly;
+        quill.enable(!isReadOnly);
+        document.body.classList.toggle('read-only', isReadOnly);
+        toggleModeBtn.textContent = isReadOnly ? 'Modo Edición' : 'Modo Lectura';
+    }
+
     function downloadDocx() {
         if (currentNoteId !== null) {
             const content = notes[currentNoteId].content;
@@ -73,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newNoteBtn.addEventListener('click', createNote);
     saveNoteBtn.addEventListener('click', saveNote);
     downloadDocxBtn.addEventListener('click', downloadDocx);
+    toggleModeBtn.addEventListener('click', toggleReadMode);
 
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.toLowerCase();
